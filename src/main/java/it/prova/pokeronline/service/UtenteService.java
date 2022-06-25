@@ -16,4 +16,6 @@ public interface UtenteService {
 	
 	public List<Utente> findAllUtenti();
 	
+	public List<Utente> findByExample(Utente example);
+	
 }
