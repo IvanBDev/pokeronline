@@ -83,7 +83,7 @@ public class PokeronlineApplication implements CommandLineRunner {
 			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(player2.getId());
 		}
-		
+
 		Set<Utente> giocatoriTavolo1 = new HashSet<Utente>();
 		giocatoriTavolo1.add(utenteServiceInstance.findByUsername("sPlayer"));
 		giocatoriTavolo1.add(utenteServiceInstance.findByUsername("player"));
@@ -99,7 +99,7 @@ public class PokeronlineApplication implements CommandLineRunner {
 
 		// TAVOLO2##########################################
 		Set<Utente> giocatoriTavolo2 = new HashSet<Utente>();
-		//giocatoriTavolo2.add(utenteServiceInstance.findByUsername("player"));
+		// giocatoriTavolo2.add(utenteServiceInstance.findByUsername("player"));
 		giocatoriTavolo2.add(utenteServiceInstance.findByUsername("jackPot"));
 
 		Utente utenteCreazione2 = utenteServiceInstance.findByUsername("sPlayer");
@@ -109,6 +109,20 @@ public class PokeronlineApplication implements CommandLineRunner {
 		if (tavolo2 == null) {
 			tavolo2 = new Tavolo(2L, denominazione2, LocalDate.now(), 100, 100, giocatoriTavolo2, utenteCreazione2);
 			tavoloServiceInstance.inserisciNuovo(tavolo2);
+		}
+
+		// TAVOLO2##########################################
+		Set<Utente> giocatoriTavolo3 = new HashSet<Utente>();
+		// giocatoriTavolo3.add(utenteServiceInstance.findByUsername("player"));
+		//giocatoriTavolo3.add(utenteServiceInstance.findByUsername("jackPot"));
+
+		Utente utenteCreazione3 = utenteServiceInstance.findByUsername("sPlayer");
+		String denominazione3 = "A003";
+		Tavolo tavolo3 = tavoloServiceInstance.findByDenominazione(denominazione3);
+
+		if (tavolo3 == null) {
+			tavolo3 = new Tavolo(3L, denominazione2, LocalDate.now(), 100, 100, giocatoriTavolo3, utenteCreazione3);
+			tavoloServiceInstance.inserisciNuovo(tavolo3);
 		}
 
 	}

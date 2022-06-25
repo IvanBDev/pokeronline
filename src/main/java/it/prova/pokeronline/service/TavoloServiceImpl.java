@@ -114,4 +114,10 @@ public class TavoloServiceImpl implements TavoloService{
 		return typedQuery.getResultList();
 	}
 
+	@Override
+	public void rimuovi(Long idTavolo) {
+		// TODO Auto-generated method stub
+		tavoloRepository.deleteById(idTavolo);
+	}
+
 }

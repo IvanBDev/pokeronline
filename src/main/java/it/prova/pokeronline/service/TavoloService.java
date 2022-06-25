@@ -21,5 +21,7 @@ public interface TavoloService {
 	List<Tavolo> trovaTramiteUtenteCreazione(Long idUtenteCreazione);
 	
 	List<Tavolo> findByExample(Tavolo example);
+	
+	void rimuovi(Long idTavolo);
 
 }

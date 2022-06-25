@@ -46,8 +46,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(UtenteCreazioneNotNullException.class)
-	public ResponseEntity<Object> handleUtenteNotFoundException(UtenteCreazioneNotNullException ex, WebRequest request) {
+	@ExceptionHandler(TavoloNotFoundException.class)
+	public ResponseEntity<Object> handleUtenteNotFoundException(TavoloNotFoundException ex, WebRequest request) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", LocalDateTime.now());
@@ -57,17 +57,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 	
-//
-//	@ExceptionHandler(RegistaNotFoundException.class)
-//	public ResponseEntity<Object> handleRegistaNotFoundException(RegistaNotFoundException ex, WebRequest request) {
-//
-//		Map<String, Object> body = new LinkedHashMap<>();
-//		body.put("timestamp", LocalDateTime.now());
-//		body.put("message", ex.getMessage());
-//		body.put("status", HttpStatus.NOT_FOUND);
-//
-//		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-//	}
+
+	@ExceptionHandler(GiocatoriPresentiAlTavoloException.class)
+	public ResponseEntity<Object> handleRegistaNotFoundException(GiocatoriPresentiAlTavoloException ex, WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(IdNotNullForInsertException.class)
 	public ResponseEntity<Object> handleIdNotNullForInsertException(IdNotNullForInsertException ex,

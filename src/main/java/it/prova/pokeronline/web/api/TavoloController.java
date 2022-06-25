@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +24,9 @@ import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.TavoloService;
 import it.prova.pokeronline.service.UtenteService;
+import it.prova.pokeronline.web.api.exception.GiocatoriPresentiAlTavoloException;
 import it.prova.pokeronline.web.api.exception.IdNotNullForInsertException;
-import it.prova.pokeronline.web.api.exception.UtenteCreazioneNotNullException;
+import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 
 @RestController
 @RequestMapping("api/tavolo")
@@ -54,7 +57,7 @@ public class TavoloController {
 	// elencandoli grazie al ControllerAdvice
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public TavoloDTO createNew(@Valid @RequestBody TavoloDTO tavoloInput) throws UtenteCreazioneNotNullException {
+	public TavoloDTO createNew(@Valid @RequestBody TavoloDTO tavoloInput) {
 		// se mi viene inviato un id jpa lo interpreta come update ed a me (producer)
 		// non sta bene
 		if (tavoloInput.getId() != null)
@@ -79,6 +82,32 @@ public class TavoloController {
 
 		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(example.buildTavoloModel()),
 				false);
+	}
+	
+	@GetMapping("/{id}")
+	public TavoloDTO findById(@PathVariable(value = "id", required = true) long id) {
+
+		Tavolo tavoloInstance = tavoloService.caricaSingoloElementoConGiocatori(id);
+
+		if (tavoloInstance == null)
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
+
+		return TavoloDTO.buildTavoloDTOFromModel(tavoloInstance, true);
+	}
+	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable(required = true) Long id) {
+		Tavolo tavoloInstance = tavoloService.caricaSingoloElementoConGiocatori(id);
+
+		if (tavoloInstance == null)
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
+
+		if (tavoloInstance.getGiocatori() == null || !tavoloInstance.getGiocatori().isEmpty()) {
+			throw new GiocatoriPresentiAlTavoloException("Impossibile eliminare il tavolo... sono presenti dei giocatori che stanno ancora giocando!");
+		}
+
+		tavoloService.rimuovi(tavoloInstance.getId());
 	}
 
 }
