@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.UtenteRepository;
+import it.prova.pokeronline.web.api.exception.UtenteNotFoundException;
 
 @Service
 public class UtenteServiceImpl implements UtenteService{
@@ -134,7 +135,26 @@ public class UtenteServiceImpl implements UtenteService{
 	@Transactional
 	public void rimuovi(Utente utenteInstance) {
 		// TODO Auto-generated method stub
-		utenteRepository.delete(utenteInstance);
+		utenteInstance.setStato(StatoUtente.DISABILITATO);
+		utenteRepository.save(utenteInstance);
+	}
+
+	@Override
+	@Transactional
+	public Utente aggiorna(Utente utenteInstance) {
+		// TODO Auto-generated method stub
+		Utente utenteApp = utenteRepository.findById(utenteInstance.getId()).orElse(null);
+		if(utenteApp == null)
+			throw new UtenteNotFoundException("Utente non trovato");
+		
+		utenteApp.setNome(utenteInstance.getNome());
+		utenteApp.setCognome(utenteInstance.getCognome());
+		utenteApp.setUsername(utenteInstance.getUsername());
+		utenteApp.setEsperienzaAccumulata(utenteInstance.getEsperienzaAccumulata());
+		utenteApp.setCreditoAccumulato(utenteInstance.getCreditoAccumulato());
+		utenteApp.setRuoli(utenteInstance.getRuoli());
+		
+		return utenteRepository.save(utenteApp);
 	}
 
 }

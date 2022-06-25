@@ -20,4 +20,6 @@ public interface UtenteService {
 	
 	public void rimuovi(Utente idUtente);
 	
+	public Utente aggiorna(Utente utenteInstance);
+	
 }
