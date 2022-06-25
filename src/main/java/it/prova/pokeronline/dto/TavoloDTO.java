@@ -151,13 +151,19 @@ public class TavoloDTO {
 		TavoloDTO result = new TavoloDTO(tavoloModel.getId(), tavoloModel.getEsperienzaMinima(),
 				tavoloModel.getCifraMinima(), tavoloModel.getDenominazione(), tavoloModel.getDataCreazione());
 
-		if (includeGiocatori)
+		if (tavoloModel.getUtenteCreazione() != null && tavoloModel.getUtenteCreazione().getId() != null
+				&& tavoloModel.getUtenteCreazione().getId() > 0) {
+			result.setUtenteCreazione(UtenteDTO.buildUtenteDTOFromModel(tavoloModel.getUtenteCreazione()));
+		}
+
+		if (tavoloModel.getGiocatori() != null && !tavoloModel.getGiocatori().isEmpty()) {
 			result.setGiocatori(UtenteDTO.buildUtenteDTOSetFromModelSet(tavoloModel.getGiocatori()));
+		}
 
 		return result;
 	}
 
-	public static List<TavoloDTO> createTavoloDTOSetFromModelSet(List<Tavolo> modelListInput,
+	public static List<TavoloDTO> createTavoloDTOListFromModelList(List<Tavolo> modelListInput,
 			boolean includeGiocatori) {
 		return modelListInput.stream().map(tavoloEntity -> {
 			TavoloDTO result = TavoloDTO.buildTavoloDTOFromModel(tavoloEntity, includeGiocatori);

@@ -13,5 +13,11 @@ public interface TavoloService {
 	Tavolo caricaSingoloElemento(Long id);
 
 	Tavolo caricaSingoloElementoConGiocatori(Long id);
+	
+	Tavolo findByDenominazione(String denominazione);
+	
+	Tavolo inserisciNuovo(Tavolo tavoloInstance);
+	
+	List<Tavolo> trovaTramiteUtenteCreazione(Long idUtenteCreazione);
 
 }
