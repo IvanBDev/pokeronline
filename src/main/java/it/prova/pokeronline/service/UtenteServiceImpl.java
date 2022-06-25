@@ -40,13 +40,15 @@ public class UtenteServiceImpl implements UtenteService{
 
 	@Override
 	@Transactional
-	public void inserisciNuovo(Utente utenteInstance) {
+	public Utente inserisciNuovo(Utente utenteInstance) {
 		// TODO Auto-generated method stub
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDataRegistrazione(LocalDate.now());
+		utenteInstance.setCreditoAccumulato(50);
+		utenteInstance.setEsperienzaAccumulata(50);
 		
-		utenteRepository.save(utenteInstance);
+		return utenteRepository.save(utenteInstance);
 	}
 
 	@Override
@@ -79,6 +81,7 @@ public class UtenteServiceImpl implements UtenteService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Utente> findByExample(Utente example) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramaterMap = new HashMap<String, Object>();

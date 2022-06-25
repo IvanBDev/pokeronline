@@ -113,6 +113,15 @@ public class Utente {
 		this.dataRegistrazione = dataRegistrazione;
 	}
 
+	public Utente(Long id, String username, String password, String nome, String cognome) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+	}
+
 	public Utente(String username, String password) {
 		super();
 		this.username = username;
