@@ -93,6 +93,26 @@ public class Utente {
 		this.stato = stato;
 	}
 
+	public Utente(String username, String password, String nome, String cognome,
+			Integer esperienzaAccumulata, Integer creditoAccumulato) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.esperienzaAccumulata = esperienzaAccumulata;
+		this.creditoAccumulato = creditoAccumulato;
+	}
+
+	public Utente(String username, String password, String nome, String cognome, LocalDate dataRegistrazione) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dataRegistrazione = dataRegistrazione;
+	}
+
 	public Utente(String username, String password) {
 		super();
 		this.username = username;
