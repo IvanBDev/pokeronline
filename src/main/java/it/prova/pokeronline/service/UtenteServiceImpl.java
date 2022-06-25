@@ -75,6 +75,7 @@ public class UtenteServiceImpl implements UtenteService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Utente> findAllUtenti() {
 		// TODO Auto-generated method stub
 		return (List<Utente>) utenteRepository.findAll();
@@ -127,6 +128,13 @@ public class UtenteServiceImpl implements UtenteService{
 		}
 
 		return typedQuery.getResultList();
+	}
+
+	@Override
+	@Transactional
+	public void rimuovi(Utente utenteInstance) {
+		// TODO Auto-generated method stub
+		utenteRepository.delete(utenteInstance);
 	}
 
 }

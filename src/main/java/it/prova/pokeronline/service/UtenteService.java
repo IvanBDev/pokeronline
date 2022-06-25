@@ -18,4 +18,6 @@ public interface UtenteService {
 	
 	public List<Utente> findByExample(Utente example);
 	
+	public void rimuovi(Utente idUtente);
+	
 }
