@@ -14,6 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "tavolo")
@@ -81,6 +85,20 @@ public class Tavolo {
 		this.dataCreazione = dataCreazione;
 		this.esperienzaMinima = esperienzaMinima;
 		this.cifraMinima = cifraMinima;
+	}
+
+	public Tavolo(Long id, @NotNull(message = "{esperienzaMinima.notnull}") @Min(0) Integer esperienzaMinima,
+			@NotNull(message = "{cifraMinima.notnull}") @Min(0) Integer cifraMinima,
+			@NotBlank(message = "{denominazione.notblank}") @Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri") String denominazione,
+			@NotNull(message = "{dataCreazione.notnull}") LocalDate dataCreazione) {
+
+		super();
+		this.id = id;
+		this.denominazione = denominazione;
+		this.dataCreazione = dataCreazione;
+		this.esperienzaMinima = esperienzaMinima;
+		this.cifraMinima = cifraMinima;
+		
 	}
 
 	public Long getId() {

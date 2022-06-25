@@ -12,9 +12,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import it.prova.pokeronline.model.Tavolo;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TavoloDTO {
 
 	public Long id;
@@ -139,15 +141,11 @@ public class TavoloDTO {
 	}
 
 	public Tavolo buildTavoloModel() {
-
-		Tavolo result = new Tavolo(this.id, this.denominazione, this.dataCreazione, this.esperienzaMinima,
-				this.cifraMinima, this.utenteCreazione.buildUtenteModel(false));
-
-		return result;
-
+		return new Tavolo(this.id, this.esperienzaMinima, this.cifraMinima, this.denominazione, this.dataCreazione);
 	}
 
 	public static TavoloDTO buildTavoloDTOFromModel(Tavolo tavoloModel, boolean includeGiocatori) {
+
 		TavoloDTO result = new TavoloDTO(tavoloModel.getId(), tavoloModel.getEsperienzaMinima(),
 				tavoloModel.getCifraMinima(), tavoloModel.getDenominazione(), tavoloModel.getDataCreazione());
 
@@ -165,12 +163,12 @@ public class TavoloDTO {
 
 	public static List<TavoloDTO> createTavoloDTOListFromModelList(List<Tavolo> modelListInput,
 			boolean includeGiocatori) {
+
 		return modelListInput.stream().map(tavoloEntity -> {
 			TavoloDTO result = TavoloDTO.buildTavoloDTOFromModel(tavoloEntity, includeGiocatori);
-			
+
 			if (includeGiocatori)
 				result.setGiocatori(UtenteDTO.buildUtenteDTOSetFromModelSet(tavoloEntity.getGiocatori()));
-			
 			return result;
 		}).collect(Collectors.toList());
 	}

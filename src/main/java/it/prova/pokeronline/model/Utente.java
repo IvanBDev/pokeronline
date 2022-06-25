@@ -128,6 +128,14 @@ public class Utente {
 		this.password = password;
 	}
 
+	public Utente(Long id, String username, String nome, String cognome) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nome = nome;
+		this.cognome = cognome;
+	}
+
 	public Long getId() {
 		return id;
 	}
