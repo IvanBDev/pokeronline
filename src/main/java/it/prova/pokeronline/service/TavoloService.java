@@ -19,5 +19,7 @@ public interface TavoloService {
 	Tavolo inserisciNuovo(Tavolo tavoloInstance);
 	
 	List<Tavolo> trovaTramiteUtenteCreazione(Long idUtenteCreazione);
+	
+	List<Tavolo> findByExample(Tavolo example);
 
 }

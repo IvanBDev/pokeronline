@@ -1,7 +1,14 @@
 package it.prova.pokeronline.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +21,9 @@ public class TavoloServiceImpl implements TavoloService{
 	
 	@Autowired
 	private TavoloRepository tavoloRepository;
+	
+	@Autowired
+	private EntityManager entityManager; 
 
 	@Override
 	@Transactional(readOnly = true)
@@ -62,6 +72,46 @@ public class TavoloServiceImpl implements TavoloService{
 	public List<Tavolo> trovaTramiteUtenteCreazione(Long idUtenteCreazione) {
 		// TODO Auto-generated method stub
 		return tavoloRepository.findByUtenteCreazione(idUtenteCreazione);
+	}
+
+	@Override
+	public List<Tavolo> findByExample(Tavolo example) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramaterMap = new HashMap<String, Object>();
+		List<String> whereClauses = new ArrayList<String>();
+
+		StringBuilder queryBuilder = new StringBuilder("select t from Tavolo t where t.id = t.id ");
+
+		if (StringUtils.isNotEmpty(example.getDenominazione())) {
+			whereClauses.add(" t.denominazione  like :denominazione ");
+			paramaterMap.put("denominazione", "%" + example.getDenominazione() + "%");
+		}
+		if (example.getCifraMinima() != null && example.getCifraMinima() > 0) {
+			whereClauses.add(" t.cifraMinima > :cifraMinima ");
+			paramaterMap.put("cifraMinima", example.getCifraMinima());
+		}
+		if (example.getEsperienzaMinima() != null && example.getEsperienzaMinima() > 0) {
+			whereClauses.add(" t.esperienzaMinima > :esperienzaMinima ");
+			paramaterMap.put("esperienzaMinima", example.getEsperienzaMinima());
+		}
+		if (example.getDataCreazione() != null) {
+			whereClauses.add("t.dataCreazione >= :dataCreazione ");
+			paramaterMap.put("dataCreazione", example.getDataCreazione());
+		}
+		if (example.getUtenteCreazione() != null && example.getUtenteCreazione().getId() > 0) {
+			whereClauses.add(" t.utenteCreazione.id = :utenteCreazioneId ");
+			paramaterMap.put("utenteCreazioneId",  example.getUtenteCreazione().getId());
+		}
+		
+		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
+		queryBuilder.append(StringUtils.join(whereClauses, " and "));
+		TypedQuery<Tavolo> typedQuery = entityManager.createQuery(queryBuilder.toString(), Tavolo.class);
+
+		for (String key : paramaterMap.keySet()) {
+			typedQuery.setParameter(key, paramaterMap.get(key));
+		}
+
+		return typedQuery.getResultList();
 	}
 
 }
