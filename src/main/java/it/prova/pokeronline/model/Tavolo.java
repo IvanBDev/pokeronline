@@ -1,6 +1,6 @@
 package it.prova.pokeronline.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ public class Tavolo {
 	@Column(name = "denominazione")
 	private String denominazione;
 	@Column(name = "dataCrezione")
-	private Date dataCreazione;
+	private LocalDate dataCreazione;
 	@Column(name = "esperienzaMinima")
 	private Integer esperienzaMinima;
 	@Column(name = "cifraMinima")
@@ -43,7 +43,7 @@ public class Tavolo {
 		super();
 	}
 
-	public Tavolo(Long id, String denominazione, Date dataCreazione, Integer esperienzaMinima, Integer cifraMinima,
+	public Tavolo(Long id, String denominazione, LocalDate dataCreazione, Integer esperienzaMinima, Integer cifraMinima,
 			Set<Utente> giocatori, Utente utenteCreazione) {
 		super();
 		this.id = id;
@@ -55,7 +55,18 @@ public class Tavolo {
 		this.utenteCreazione = utenteCreazione;
 	}
 
-	public Tavolo(Long id, String denominazione, Date dataCreazione, Integer esperienzaMinima, Integer cifraMinima) {
+	public Tavolo(Long id, String denominazione, LocalDate dataCreazione, Integer esperienzaMinima, Integer cifraMinima,
+			Utente utenteCreazione) {
+		super();
+		this.id = id;
+		this.denominazione = denominazione;
+		this.dataCreazione = dataCreazione;
+		this.esperienzaMinima = esperienzaMinima;
+		this.cifraMinima = cifraMinima;
+		this.utenteCreazione = utenteCreazione;
+	}
+
+	public Tavolo(Long id, String denominazione, LocalDate dataCreazione, Integer esperienzaMinima, Integer cifraMinima) {
 		super();
 		this.id = id;
 		this.denominazione = denominazione;
@@ -64,7 +75,7 @@ public class Tavolo {
 		this.cifraMinima = cifraMinima;
 	}
 
-	public Tavolo(String denominazione, Date dataCreazione, Integer esperienzaMinima, Integer cifraMinima) {
+	public Tavolo(String denominazione, LocalDate dataCreazione, Integer esperienzaMinima, Integer cifraMinima) {
 		super();
 		this.denominazione = denominazione;
 		this.dataCreazione = dataCreazione;
@@ -88,11 +99,11 @@ public class Tavolo {
 		this.denominazione = denominazione;
 	}
 
-	public Date getDataCreazione() {
+	public LocalDate getDataCreazione() {
 		return dataCreazione;
 	}
 
-	public void setDataCreazione(Date dataCreazione) {
+	public void setDataCreazione(LocalDate dataCreazione) {
 		this.dataCreazione = dataCreazione;
 	}
 

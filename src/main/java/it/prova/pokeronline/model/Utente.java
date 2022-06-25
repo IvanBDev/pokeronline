@@ -1,6 +1,6 @@
 package it.prova.pokeronline.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +33,7 @@ public class Utente {
 	@Column(name = "cognome")
 	private String cognome;
 	@Column(name = "dataRegistrazione")
-	private Date dataRegistrazione;
+	private LocalDate dataRegistrazione;
 	@Column(name = "esperienzaAccumulata")
 	private Integer esperienzaAccumulata;
 	@Column(name = "creditoAccumulato")
@@ -51,7 +51,7 @@ public class Utente {
 		super();
 	}
 
-	public Utente(Long id, String username, String password, String nome, String cognome, Date dataRegistrazione,
+	public Utente(Long id, String username, String password, String nome, String cognome, LocalDate dataRegistrazione,
 			Integer esperienzaAccumulata, Integer creditoAccumulato, StatoUtente stato, Set<Ruolo> ruoli) {
 		super();
 		this.id = id;
@@ -66,7 +66,7 @@ public class Utente {
 		this.ruoli = ruoli;
 	}
 
-	public Utente(Long id, String username, String password, String nome, String cognome, Date dataRegistrazione,
+	public Utente(Long id, String username, String password, String nome, String cognome, LocalDate dataRegistrazione,
 			Integer esperienzaAccumulata, Integer creditoAccumulato, StatoUtente stato) {
 		super();
 		this.id = id;
@@ -80,7 +80,7 @@ public class Utente {
 		this.stato = stato;
 	}
 
-	public Utente(String username, String password, String nome, String cognome, Date dataRegistrazione,
+	public Utente(String username, String password, String nome, String cognome, LocalDate dataRegistrazione,
 			Integer esperienzaAccumulata, Integer creditoAccumulato, StatoUtente stato) {
 		super();
 		this.username = username;
@@ -139,11 +139,11 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
-	public Date getDataRegistrazione() {
+	public LocalDate getDataRegistrazione() {
 		return dataRegistrazione;
 	}
 
-	public void setDataRegistrazione(Date dataRegistrazione) {
+	public void setDataRegistrazione(LocalDate dataRegistrazione) {
 		this.dataRegistrazione = dataRegistrazione;
 	}
 
