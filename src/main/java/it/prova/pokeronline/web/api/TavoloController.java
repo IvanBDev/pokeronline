@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -103,11 +104,26 @@ public class TavoloController {
 		if (tavoloInstance == null)
 			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
 
-		if (tavoloInstance.getGiocatori() == null || !tavoloInstance.getGiocatori().isEmpty()) {
+		if (tavoloInstance.getGiocatori() == null || !tavoloInstance.getGiocatori().isEmpty())
 			throw new GiocatoriPresentiAlTavoloException("Impossibile eliminare il tavolo... sono presenti dei giocatori che stanno ancora giocando!");
-		}
+		
 
 		tavoloService.rimuovi(tavoloInstance.getId());
+	}
+	
+	@PutMapping("/{id}")
+	public TavoloDTO update(@Valid @RequestBody TavoloDTO tavoloInput, @PathVariable(required = true) Long id) {
+		Tavolo tavoloInstance = tavoloService.caricaSingoloElementoConGiocatori(id);
+
+		if (tavoloInstance == null)
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
+
+		if (tavoloInstance.getGiocatori() == null || !tavoloInstance.getGiocatori().isEmpty())
+			throw new GiocatoriPresentiAlTavoloException("Impossibile eliminare il tavolo... sono presenti dei giocatori che stanno ancora giocando!");
+
+		tavoloInput.setId(id);
+		Tavolo tavoloAggiornato = tavoloService.aggiorna(tavoloInput.buildTavoloModel());
+		return TavoloDTO.buildTavoloDTOFromModel(tavoloAggiornato, false);
 	}
 
 }

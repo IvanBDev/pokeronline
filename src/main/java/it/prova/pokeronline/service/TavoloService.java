@@ -23,5 +23,7 @@ public interface TavoloService {
 	List<Tavolo> findByExample(Tavolo example);
 	
 	void rimuovi(Long idTavolo);
+	
+	Tavolo aggiorna(Tavolo tavoloInstance);
 
 }

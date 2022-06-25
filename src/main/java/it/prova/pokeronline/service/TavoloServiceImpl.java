@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.repository.TavoloRepository;
+import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 
 @Service
 public class TavoloServiceImpl implements TavoloService{
@@ -75,6 +76,7 @@ public class TavoloServiceImpl implements TavoloService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Tavolo> findByExample(Tavolo example) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramaterMap = new HashMap<String, Object>();
@@ -115,9 +117,26 @@ public class TavoloServiceImpl implements TavoloService{
 	}
 
 	@Override
+	@Transactional
 	public void rimuovi(Long idTavolo) {
 		// TODO Auto-generated method stub
 		tavoloRepository.deleteById(idTavolo);
+	}
+
+	@Override
+	@Transactional
+	public Tavolo aggiorna(Tavolo tavoloInstance) {
+		// TODO Auto-generated method stub
+		Tavolo tavoloAppoggio = tavoloRepository.findById(tavoloInstance.getId()).orElse(null);
+		if(tavoloAppoggio == null)
+			throw new TavoloNotFoundException("Tavolo non trovato");
+		
+		tavoloAppoggio.setDenominazione(tavoloInstance.getDenominazione());
+		tavoloAppoggio.setDataCreazione(tavoloInstance.getDataCreazione());
+		tavoloAppoggio.setCifraMinima(tavoloInstance.getCifraMinima());
+		tavoloAppoggio.setEsperienzaMinima(tavoloInstance.getEsperienzaMinima());
+		
+		return tavoloRepository.save(tavoloAppoggio);
 	}
 
 }
