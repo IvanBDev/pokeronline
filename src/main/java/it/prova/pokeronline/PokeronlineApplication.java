@@ -49,6 +49,22 @@ public class PokeronlineApplication implements CommandLineRunner {
 			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(admin.getId());
 		}
+		
+		if (utenteServiceInstance.findByUsername("sPlayer") == null) {
+			Utente specialPlayer = new Utente("sPlayer", "sPlayer", "Luigi", "Verdi", 100, 100);
+			specialPlayer.getRuoli().add(ruoloServiceInstance.trovaTramiteDescrizioneERuolo("Special Player", Ruolo.ROLE_SPECIAL_PLAYER));
+			utenteServiceInstance.inserisciNuovo(specialPlayer);
+			// l'inserimento avviene come created ma io voglio attivarlo
+			utenteServiceInstance.changeUserAbilitation(specialPlayer.getId());
+		}
+		
+		if (utenteServiceInstance.findByUsername("player") == null) {
+			Utente player = new Utente("player", "player", "Mery", "Rose", 100, 100);
+			player.getRuoli().add(ruoloServiceInstance.trovaTramiteDescrizioneERuolo("Player", Ruolo.ROLE_PLAYER));
+			utenteServiceInstance.inserisciNuovo(player);
+			// l'inserimento avviene come created ma io voglio attivarlo
+			utenteServiceInstance.changeUserAbilitation(player.getId());
+		}
 
 	}
 

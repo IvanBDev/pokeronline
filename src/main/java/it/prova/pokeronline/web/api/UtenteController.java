@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.security.auth.dto.UtenteInfoJWTResponseDTO;
 import it.prova.pokeronline.service.UtenteService;
@@ -34,7 +35,14 @@ public class UtenteController {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(new UtenteInfoJWTResponseDTO(utenteLoggato.getNome(), utenteLoggato.getCognome(),
-				utenteLoggato.getUsername(), ruoli));
+				utenteLoggato.getUsername(),utenteLoggato.getDataRegistrazione(), ruoli));
+	}
+	
+	@GetMapping
+	public List<UtenteDTO> getAll() {
+		// senza DTO qui hibernate dava il problema del N + 1 SELECT
+		// (probabilmente dovuto alle librerie che serializzano in JSON)
+		return UtenteDTO.buildUtenteDTOListFromModelList(utenteService.findAllUtenti());
 	}
 
 }

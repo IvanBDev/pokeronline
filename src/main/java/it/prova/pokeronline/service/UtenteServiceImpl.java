@@ -1,6 +1,7 @@
 package it.prova.pokeronline.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,6 +60,12 @@ public class UtenteServiceImpl implements UtenteService{
 	public Utente caricaSingoloUtente(Long idUtente) {
 		// TODO Auto-generated method stub
 		return utenteRepository.findById(idUtente).orElse(null);
+	}
+
+	@Override
+	public List<Utente> findAllUtenti() {
+		// TODO Auto-generated method stub
+		return (List<Utente>) utenteRepository.findAll();
 	}
 
 }
