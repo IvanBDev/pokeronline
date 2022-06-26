@@ -22,4 +22,6 @@ public interface UtenteService {
 	
 	public Utente aggiorna(Utente utenteInstance);
 	
+	public Integer compraCredito(Utente utenteInstance, Integer aggiuntaCredito);
+	
 }

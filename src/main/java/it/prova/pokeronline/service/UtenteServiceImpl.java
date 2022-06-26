@@ -155,4 +155,12 @@ public class UtenteServiceImpl implements UtenteService{
 		return utenteRepository.save(utenteApp);
 	}
 
+	@Override
+	public Integer compraCredito(Utente utenteInstance, Integer aggiuntaCredito) {
+		// TODO Auto-generated method stub
+		utenteInstance.setCreditoAccumulato(utenteInstance.getCreditoAccumulato() + aggiuntaCredito);
+		
+		return utenteInstance.getCreditoAccumulato();
+	}
+
 }
