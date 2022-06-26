@@ -20,4 +20,7 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>{
 	@Query("FROM Tavolo t LEFT JOIN t.utenteCreazione u WHERE u.id = ?1")
 	List<Tavolo> findByUtenteCreazione(Long idUtenteCreazione);
 	
+	@Query("FROM Tavolo t LEFT JOIN t.giocatori g WHERE g.id = ?1")
+	List<Tavolo> findLastGameDiUnGiocatore(Long id);
+	
 }

@@ -139,4 +139,10 @@ public class TavoloServiceImpl implements TavoloService{
 		return tavoloRepository.save(tavoloAppoggio);
 	}
 
+	@Override
+	public List<Tavolo> trovaTavoloConGiocatore(Long idUtente) {
+		// TODO Auto-generated method stub
+		return tavoloRepository.findLastGameDiUnGiocatore(idUtente);
+	}
+
 }

@@ -25,5 +25,7 @@ public interface TavoloService {
 	void rimuovi(Long idTavolo);
 	
 	Tavolo aggiorna(Tavolo tavoloInstance);
+	
+	List<Tavolo> trovaTavoloConGiocatore(Long idUtente);
 
 }
