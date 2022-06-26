@@ -23,4 +23,7 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>{
 	@Query("FROM Tavolo t LEFT JOIN t.giocatori g WHERE g.id = ?1")
 	List<Tavolo> findLastGameDiUnGiocatore(Long id);
 	
+	@Query("FROM Tavolo t WHERE t.esperienzaMinima <= ?1")
+	List<Tavolo> findTavoliConEsperienzaMinimaMinoreOUgualeAEsperienzaAccumulata(Integer esperienzaAccumulata);
+	
 }

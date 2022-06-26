@@ -155,4 +155,11 @@ public class TavoloServiceImpl implements TavoloService{
 		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata() + 25);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Tavolo> ricercaTavoloConEsperienzaMinima(Integer esperienzaAccumulata) {
+		// TODO Auto-generated method stub
+		return tavoloRepository.findTavoliConEsperienzaMinimaMinoreOUgualeAEsperienzaAccumulata(esperienzaAccumulata);
+	}
+
 }

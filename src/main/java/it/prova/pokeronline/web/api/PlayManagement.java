@@ -74,5 +74,17 @@ public class PlayManagement {
 		tavoloService.abbandonaPartita(tavoloInstance.buildTavoloModel(), giocatore);	
 		
 	}
+	
+	@GetMapping("/searchTavoloConEsperienzaMinima")
+	public List<TavoloDTO> searchMinExp() {
+		
+		Utente giocatore = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		if (giocatore == null || giocatore.getId() < 1)
+			throw new UtenteNotFoundException("Giocatore non trovato");
+		
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.ricercaTavoloConEsperienzaMinima(giocatore.getEsperienzaAccumulata()), true);
+		
+	}
 
 }
