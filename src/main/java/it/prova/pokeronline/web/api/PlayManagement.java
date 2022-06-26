@@ -14,6 +14,7 @@ import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.TavoloService;
 import it.prova.pokeronline.service.UtenteService;
+import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 import it.prova.pokeronline.web.api.exception.UtenteNotFoundException;
 
 @RestController
@@ -56,6 +57,22 @@ public class PlayManagement {
 		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.trovaTavoloConGiocatore(giocatore.getId()),
 				true);
 
+	}
+	
+	@GetMapping("/abbandonaPartita/{idTavolo}")
+	public void abbandonaPartita(@PathVariable(value = "idTavolo", required = true) long idTavolo) {
+		
+		TavoloDTO tavoloInstance = TavoloDTO.buildTavoloDTOFromModel(tavoloService.caricaSingoloElementoConGiocatori(idTavolo), false);
+		if(tavoloInstance == null)
+			throw new TavoloNotFoundException("Tavolo non trovato");
+		
+		Utente giocatore = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		if (giocatore == null || giocatore.getId() < 1)
+			throw new UtenteNotFoundException("Giocatore non trovato");
+		
+		tavoloService.abbandonaPartita(tavoloInstance.buildTavoloModel(), giocatore);	
+		
 	}
 
 }

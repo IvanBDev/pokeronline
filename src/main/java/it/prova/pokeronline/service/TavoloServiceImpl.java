@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.pokeronline.model.Tavolo;
+import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.TavoloRepository;
 import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 
@@ -140,9 +141,18 @@ public class TavoloServiceImpl implements TavoloService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Tavolo> trovaTavoloConGiocatore(Long idUtente) {
 		// TODO Auto-generated method stub
 		return tavoloRepository.findLastGameDiUnGiocatore(idUtente);
+	}
+
+	@Override
+	@Transactional
+	public void abbandonaPartita(Tavolo tavoloInstance, Utente giocatore) {
+		// TODO Auto-generated method stub
+		tavoloInstance.getGiocatori().remove(giocatore);
+		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata() + 25);
 	}
 
 }
