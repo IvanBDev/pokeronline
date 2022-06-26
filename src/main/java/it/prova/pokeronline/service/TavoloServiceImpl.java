@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.TavoloRepository;
+import it.prova.pokeronline.repository.UtenteRepository;
 import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 
 @Service
@@ -23,6 +24,9 @@ public class TavoloServiceImpl implements TavoloService{
 	
 	@Autowired
 	private TavoloRepository tavoloRepository;
+	
+	@Autowired
+	private UtenteRepository utenteRepository;
 	
 	@Autowired
 	private EntityManager entityManager; 
@@ -160,6 +164,37 @@ public class TavoloServiceImpl implements TavoloService{
 	public List<Tavolo> ricercaTavoloConEsperienzaMinima(Integer esperienzaAccumulata) {
 		// TODO Auto-generated method stub
 		return tavoloRepository.findTavoliConEsperienzaMinimaMinoreOUgualeAEsperienzaAccumulata(esperienzaAccumulata);
+	}
+
+	@Override
+	@Transactional
+	public void giocaPartita(Tavolo tavoloInstance, Utente utenteInstance) {
+		// TODO Auto-generated method stub
+		
+		int creditoGiocatore = utenteInstance.getCreditoAccumulato();
+
+		double random = Math.random();
+		boolean segno = false;
+
+		if (random > 0.5) {
+			segno = true;
+		}
+
+		int somma = (int) (Math.random() * 1000);
+		double totale = random * somma;
+
+		if (segno == true) {
+			creditoGiocatore += totale;
+		} else {
+			creditoGiocatore -= totale;
+		}
+
+		utenteInstance.setCreditoAccumulato(creditoGiocatore);
+		if(utenteInstance.getCreditoAccumulato() < 0)
+			utenteInstance.setCreditoAccumulato(0);
+
+		utenteRepository.save(utenteInstance);
+		
 	}
 
 }

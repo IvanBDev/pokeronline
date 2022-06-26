@@ -32,5 +32,7 @@ public interface TavoloService {
 	void abbandonaPartita(Tavolo tavoloInstance, Utente giocatore);
 	
 	List<Tavolo> ricercaTavoloConEsperienzaMinima(Integer esperienzaAccumulata);
+	
+	void giocaPartita(Tavolo tavoloInstance, Utente utenteInstance);
 
 }

@@ -14,6 +14,8 @@ import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.TavoloService;
 import it.prova.pokeronline.service.UtenteService;
+import it.prova.pokeronline.web.api.exception.CreditoInsufficientePerGiocareException;
+import it.prova.pokeronline.web.api.exception.EsperienzaInsufficientePerGiocareException;
 import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 import it.prova.pokeronline.web.api.exception.UtenteNotFoundException;
 
@@ -84,6 +86,31 @@ public class PlayManagement {
 			throw new UtenteNotFoundException("Giocatore non trovato");
 		
 		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.ricercaTavoloConEsperienzaMinima(giocatore.getEsperienzaAccumulata()), true);
+		
+	}
+	
+	@GetMapping("/giocaPartita/{idTavolo}")
+	public String giocaPartita(@PathVariable(value = "idTavolo", required = true) long idTavolo) {
+		
+		TavoloDTO tavoloInstance = TavoloDTO.buildTavoloDTOFromModel(tavoloService.caricaSingoloElementoConGiocatori(idTavolo), true);
+		
+		if(tavoloInstance == null)
+			throw new TavoloNotFoundException("Tavolo non trovato");
+		
+		Utente giocatore = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		if (giocatore == null || giocatore.getId() < 1)
+			throw new UtenteNotFoundException("Giocatore non trovato");
+		
+		if(giocatore.getCreditoAccumulato() < tavoloInstance.getCifraMinima())
+			throw new CreditoInsufficientePerGiocareException("Ci spiace... credito insufficiente per poter giocare a questo tavolo");
+		
+		if(giocatore.getEsperienzaAccumulata() < tavoloInstance.getEsperienzaMinima())
+			throw new EsperienzaInsufficientePerGiocareException("Ci spiace... esperienza insufficiente per poter giocare a questo tavolo");
+		
+		tavoloService.giocaPartita(tavoloInstance.buildTavoloModel(), giocatore);
+		
+		return "Il tuo credito e' ora di: "+ giocatore.getCreditoAccumulato();
 		
 	}
 

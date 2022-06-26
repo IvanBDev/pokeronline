@@ -113,7 +113,7 @@ public class PokeronlineApplication implements CommandLineRunner {
 
 		// TAVOLO2##########################################
 		Set<Utente> giocatoriTavolo3 = new HashSet<Utente>();
-		// giocatoriTavolo3.add(utenteServiceInstance.findByUsername("player"));
+		//giocatoriTavolo3.add(utenteServiceInstance.findByUsername("player"));
 		//giocatoriTavolo3.add(utenteServiceInstance.findByUsername("jackPot"));
 
 		Utente utenteCreazione3 = utenteServiceInstance.findByUsername("sPlayer");

@@ -45,9 +45,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
-	
+
 	@ExceptionHandler(TavoloNotFoundException.class)
-	public ResponseEntity<Object> handleUtenteNotFoundException(TavoloNotFoundException ex, WebRequest request) {
+	public ResponseEntity<Object> handleTavoloNotFoundException(TavoloNotFoundException ex, WebRequest request) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", LocalDateTime.now());
@@ -56,10 +56,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
-	
 
 	@ExceptionHandler(GiocatoriPresentiAlTavoloException.class)
-	public ResponseEntity<Object> handleRegistaNotFoundException(GiocatoriPresentiAlTavoloException ex, WebRequest request) {
+	public ResponseEntity<Object> handleGiocatoriPresentiAlTavoloException(GiocatoriPresentiAlTavoloException ex,
+			WebRequest request) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", LocalDateTime.now());
@@ -80,5 +80,30 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
+
+	@ExceptionHandler(CreditoInsufficientePerGiocareException.class)
+	public ResponseEntity<Object> handleCreditoInsufficientePerGiocareException(CreditoInsufficientePerGiocareException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(EsperienzaInsufficientePerGiocareException.class)
+	public ResponseEntity<Object> handleEsperienzaInsufficientePerGiocareException(EsperienzaInsufficientePerGiocareException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
 
 }
