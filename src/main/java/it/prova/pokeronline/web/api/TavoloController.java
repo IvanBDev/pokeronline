@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.pokeronline.dto.TavoloDTO;
-import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Ruolo;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
@@ -59,16 +58,16 @@ public class TavoloController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public TavoloDTO createNew(@Valid @RequestBody TavoloDTO tavoloInput) {
-		// se mi viene inviato un id jpa lo interpreta come update ed a me (producer)
-		// non sta bene
+
 		if (tavoloInput.getId() != null)
 			throw new IdNotNullForInsertException("Non è ammesso fornire un id per la creazione");
 
-		tavoloInput.setUtenteCreazione(UtenteDTO
-				.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(tavoloInput.getUtenteCreazione().getId())));
+		Tavolo tavoloDaInserire = tavoloInput.buildTavoloModel();
+		tavoloDaInserire.setUtenteCreazione(
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+		Tavolo tavoloInsert = tavoloService.inserisciNuovo(tavoloDaInserire);
+		return TavoloDTO.buildTavoloDTOFromModel(tavoloInsert, true);
 
-		Tavolo tavoloInserito = tavoloService.inserisciNuovo(tavoloInput.buildTavoloModel());
-		return TavoloDTO.buildTavoloDTOFromModel(tavoloInserito, true);
 	}
 	
 	@PostMapping("/search")
